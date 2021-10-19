@@ -8,7 +8,7 @@ def main():
     net = nn.NeuralNetwork([784,30,10])
     trainData = [(i, o) for i, o in zip(trainImages, trainLabels)]
         
-    epochs = 30
+    epochs = 5
     for n in range(epochs):
         random.shuffle(trainData)
         for i in range(0, len(trainData), 10):
