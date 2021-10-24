@@ -27,3 +27,13 @@ def printImage(array):
         for j in range(len(array[i])):
             print(light[round((69/255) * array[i][j])], end = '')
         print('')
+
+def image(array):
+    array = np.reshape(array,(28, 28))
+    light =  ''' .\'`^",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$'''
+    s = ''
+    for i in range(len(array)):
+        for j in range(len(array[i])):
+            s += light[round((69/255) * array[i][j])]
+        s += '\n'
+    return s[:-2]
