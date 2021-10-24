@@ -8,11 +8,17 @@ def main():
     net = nn.NeuralNetwork([784,30,10])
     trainData = [(i, o) for i, o in zip(trainImages, trainLabels)]
         
-    epochs = 5
+    train(net, 30, 100, 0.5, trainData)
+    
+    net.save()
+
+def train(net, epochs, size, rate, trainData):
+    lenTrainData  = len(trainData)
     for n in range(epochs):
         random.shuffle(trainData)
-        for i in range(0, len(trainData), 10):
-            net.batch(trainData[i:i+10], lRate = 0.5)
+        for i in range(0, lenTrainData, size):
+            net.batch(trainData[i:i+size], lRate = rate)
+            print('%', round(100*(i+1)/lenTrainData, 2), '      ', end='\R')
         print('Progress: ', n + 1, '/', epochs, sep = '')
 
         correct, total = 0, 0
@@ -21,8 +27,6 @@ def main():
                 correct += 1
             total += 1
         print('Results: ', correct, '/', total, sep = '')
-    
-    net.save()
 
 def result(array):
     list = array.T.tolist()[0]
