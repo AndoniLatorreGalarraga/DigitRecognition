@@ -9,15 +9,25 @@ def getData():
     trainImagesReshape = []
     testImagesReshape = []
     for image in trainImages:
-        trainImagesReshape.append(np.reshape(image,(784,1)))
+        trainImagesReshape.append((1/255)*np.reshape(image,(784,1)))
     for image in testImages:
-        testImagesReshape.append(np.reshape(image,(784,1)))
+        testImagesReshape.append((1/255)*np.reshape(image,(784,1)))
     trainLabelsArray = []
     for label in trainLabels:
         array = [0]*10
         array[label] = 1
         trainLabelsArray.append(np.array([array]).T)
     return trainImagesReshape, trainLabelsArray, testImagesReshape, testLabels
+
+def getDataGUI():
+    testLabels = idx2numpy.convert_from_file('Data/t10k-labels.idx1-ubyte')
+    testImages = idx2numpy.convert_from_file('Data/t10k-images.idx3-ubyte')
+    testImagesReshape = []
+    testImagesGUI = []
+    for image in testImages:
+        testImagesReshape.append((1/255)*np.reshape(image,(784,1)))
+        testImagesGUI.append(image)
+    return testImagesReshape, testLabels, testImagesGUI
 
 def printImage(array):
     array = np.reshape(array,(28, 28))

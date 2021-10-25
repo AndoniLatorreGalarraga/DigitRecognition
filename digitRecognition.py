@@ -24,13 +24,10 @@ def main():
     
     trainImages, trainLabels, testImages, testLabels= mnist.getData()
     net = nn.NeuralNetwork([784,30,10])
-    net.load()
+    # net.load()
     trainData = [(i, o) for i, o in zip(trainImages, trainLabels)]
-   
     test(net, testImages, testLabels)
-    train(net, 10, 100, 0.5)
-    train(net, 30, 1000, 0.1)
-    
+    train(net, 30, 10, 3)
     net.save()
 
 def result(array):
