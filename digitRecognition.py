@@ -4,12 +4,12 @@ from Modules import neuralNetwork as nn
 from Modules import mnist
 
 def main():
-    def train(net, epochs, size, rate):
+    def train(net, epochs, size, rate, factor):
         lenTrainData  = len(trainData)
         for n in range(epochs):
             random.shuffle(trainData)
             for i in range(0, lenTrainData, size):
-                net.batch(trainData[i:i+size], lRate = rate)
+                net.batch(trainData[i:i+size], lRate = rate, mFactor = factor)
                 print('%', round(100*(i+1)/lenTrainData, 2), '      ', end='\r')
             print('Progress: ', n + 1, '/', epochs, sep = '')
             test(net, testImages, testLabels)
@@ -19,15 +19,16 @@ def main():
         for (image, label) in zip(testImages, testLabels):
             if result(net.compute(image)) == label:
                 correct += 1
+            # else: print(total)
             total += 1
         print('Results: ', correct, '/', total, sep = '')
     
     trainImages, trainLabels, testImages, testLabels= mnist.getData()
-    net = nn.NeuralNetwork([784,30,10])
+    net = nn.NeuralNetwork([784,30,30,10])
     # net.load()
     trainData = [(i, o) for i, o in zip(trainImages, trainLabels)]
     test(net, testImages, testLabels)
-    train(net, 30, 10, 3)
+    train(net, 30, 10, 3, 0.1)
     net.save()
 
 def result(array):

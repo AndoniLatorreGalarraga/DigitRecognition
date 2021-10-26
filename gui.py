@@ -6,12 +6,7 @@ import tkinter as tk
 
 
 
-def main():
-    def scale(x,y,scale,hex):
-        for dx in range(scale):
-            for dy in range(scale):
-                img.put(hex, (scale*y+dy,scale*x+dx))
-                
+def main():             
     def search():
         result.delete('1.0', tk.END)
         number = int(entry.get())
@@ -23,13 +18,13 @@ def main():
         for i in range(10):
             result.insert(str(float(number)), str(i) + ': ' + str(list[i]) + '\n')
         prediction = str(list.index(max(list)))
-        result.insert('11.0', '\nThe prediction is: ' +  prediction)
-        result.insert('13.0', '\n\nThe answer is: ' +  str(testLabels[number]))
+        result.insert('11.0', '\nThe network prediction is: ' +  prediction)
+        result.insert('13.0', '\n\nThe dataset label is: ' +  str(testLabels[number]))
 
-        for x in range(28):
-            for y in range(28):
-                b = image[x][y]
-                scale(x,y,8,'#%02x%02x%02x' % (b, b, b))
+        for x in range(28*8):
+            for y in range(28*8):
+                b = image[x//8][y//8]
+                img.put('#%02x%02x%02x' % (b, b, b), (y, x))
     
         
     testImages, testLabels, testImagesGUI= mnist.getDataGUI()

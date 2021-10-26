@@ -28,8 +28,10 @@ class NeuralNetwork():
         self.biases = [np.random.randn(n, 1) for n in layerSizes[1:]]
         self.layerSizes = layerSizes
         self.depth = len(layerSizes)
+        self.prevGradW = [np.zeros((n, m)) for n, m in zip(self.layerSizes[1:], self.layerSizes[:-1])]
+        self.prevGradB = [np.zeros((n, 1)) for n in self.layerSizes[1:]]
     
-    def batch(self, data, lRate = 0.5):
+    def batch(self, data, lRate = 1, mFactor = 0):
         gradW = [np.zeros((n, m)) for n, m in zip(self.layerSizes[1:], self.layerSizes[:-1])]
         gradB = [np.zeros((n, 1)) for n in self.layerSizes[1:]]
         dataLen = 0
@@ -63,8 +65,9 @@ class NeuralNetwork():
                 gradW[l] = gradW[l] + dW[l]
         #update weights and biases
         for l in range(0, self.depth-1):
-            self.weights[l] = self.weights[l] - gradW[l] * (lRate/dataLen)
-            self.biases[l] = self.biases[l] - gradB[l] * (lRate/dataLen)
+            self.weights[l] = self.weights[l] - (gradW[l] * (lRate/dataLen) - mFactor * self.prevGradW[l])
+            self.biases[l] = self.biases[l] - (gradB[l] * (lRate/dataLen) - mFactor * self.prevGradB[l])
+        self.prevGradW, self.prevGradB = gradW, gradB
     
     def compute(self, i):
         for w, b in zip(self.weights, self.biases):
